@@ -1,4 +1,4 @@
-package com.permanovd.tests.User.infrastructure;
+package com.permanovd.user_maintainance.User.infrastructure;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;

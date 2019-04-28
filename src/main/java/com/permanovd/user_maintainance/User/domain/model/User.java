@@ -1,4 +1,4 @@
-package com.permanovd.tests.User.domain.model;
+package com.permanovd.user_maintainance.User.domain.model;
 
 import javax.persistence.*;
 

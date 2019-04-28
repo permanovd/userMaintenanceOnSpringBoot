@@ -1,9 +1,9 @@
-package com.permanovd.tests.Integration;
+package com.permanovd.user_maintainance.Integration;
 
-import com.permanovd.tests.User.application.UserService;
-import com.permanovd.tests.User.domain.model.User;
-import com.permanovd.tests.User.domain.model.UserRepository;
-import com.permanovd.tests.User.ui.UserCreateDTO;
+import com.permanovd.user_maintainance.User.application.UserService;
+import com.permanovd.user_maintainance.User.domain.model.User;
+import com.permanovd.user_maintainance.User.domain.model.UserRepository;
+import com.permanovd.user_maintainance.User.ui.UserCreateDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

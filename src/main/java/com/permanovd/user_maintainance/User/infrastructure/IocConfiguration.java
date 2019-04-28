@@ -1,4 +1,4 @@
-package com.permanovd.tests.User.infrastructure;
+package com.permanovd.user_maintainance.User.infrastructure;
 
 import org.springframework.context.annotation.Configuration;
 

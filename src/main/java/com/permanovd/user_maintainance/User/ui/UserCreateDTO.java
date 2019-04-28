@@ -1,4 +1,4 @@
-package com.permanovd.tests.User.ui;
+package com.permanovd.user_maintainance.User.ui;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;

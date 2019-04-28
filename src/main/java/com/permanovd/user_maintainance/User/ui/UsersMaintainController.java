@@ -1,10 +1,10 @@
-package com.permanovd.tests.User.ui;
+package com.permanovd.user_maintainance.User.ui;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.permanovd.tests.User.application.UserService;
-import com.permanovd.tests.User.domain.model.User;
-import com.permanovd.tests.User.domain.model.UserRepository;
+import com.permanovd.user_maintainance.User.application.UserService;
+import com.permanovd.user_maintainance.User.domain.model.User;
+import com.permanovd.user_maintainance.User.domain.model.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

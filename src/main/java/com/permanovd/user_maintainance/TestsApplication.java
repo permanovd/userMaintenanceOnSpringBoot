@@ -1,6 +1,6 @@
-package com.permanovd.tests;
+package com.permanovd.user_maintainance;
 
-import com.permanovd.tests.User.infrastructure.UniqueNameGenerator;
+import com.permanovd.user_maintainance.User.infrastructure.UniqueNameGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
