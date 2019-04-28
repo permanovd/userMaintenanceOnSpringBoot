@@ -1,4 +1,4 @@
-package com.permanovd.tests;
+package com.permanovd.user_maintainance;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
