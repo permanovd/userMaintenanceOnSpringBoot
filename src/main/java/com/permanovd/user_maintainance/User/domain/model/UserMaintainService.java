@@ -9,9 +9,11 @@ import java.util.Date;
 public class UserMaintainService {
 
     private PasswordEncoder passwordEncoder;
+    private UserRepository userRepository;
 
-    public UserMaintainService(PasswordEncoder passwordEncoder) {
+    public UserMaintainService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     public User register(String login,
@@ -20,7 +22,13 @@ public class UserMaintainService {
                          String lastName,
                          Date bornAt,
                          String address,
-                         String aboutMe) {
+                         String aboutMe) throws UserWithSameNameExistsException {
+
+        User withSameName = userRepository.userWithSameName(login);
+        if (null != withSameName) {
+            throw new UserWithSameNameExistsException(withSameName);
+        }
+
         User user = new User(login, passwordEncoder.encode(password));
         user.provideAdditionalInfo(new UserAdditionalInfo(bornAt, address, aboutMe));
         user.setFirstName(firstName);

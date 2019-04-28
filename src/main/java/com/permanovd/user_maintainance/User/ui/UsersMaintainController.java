@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.permanovd.user_maintainance.User.application.UserService;
 import com.permanovd.user_maintainance.User.domain.model.User;
 import com.permanovd.user_maintainance.User.domain.model.UserRepository;
+import com.permanovd.user_maintainance.User.domain.model.UserWithSameNameExistsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,7 +52,7 @@ public class UsersMaintainController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/new")
     public void registerNew(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        String result;
+        String result = "";
         Scanner s = new Scanner(request.getInputStream()).useDelimiter("\\A");
         String payload = s.hasNext() ? s.next() : "";
 
@@ -59,6 +60,8 @@ public class UsersMaintainController {
             UserCreateDTO userCreateDTO = serializer.readValue(payload, UserCreateDTO.class);
             String id = userService.register(userCreateDTO);
             result = "{\"id\": \"" + id + "\"}";
+        } catch (UserWithSameNameExistsException e) {
+            result = "{\"error\": \"This login is already used.\"}";
         } catch (Exception e) {
             result = "{\"error\": \"Internal server error.\"}";
         }

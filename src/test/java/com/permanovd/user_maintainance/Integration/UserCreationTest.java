@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,7 +30,8 @@ public class UserCreationTest {
     @Test
     public void systemAcceptsRegistrationWhenUserDefinesRequiredFields() {
         // Arrange.
-        UserCreateDTO dto = new UserCreateDTO("test", "ffs");
+        String login = UUID.randomUUID().toString();
+        UserCreateDTO dto = new UserCreateDTO(login, "ffs");
 
         // Act.
         String id = userService.register(dto);
@@ -37,13 +39,13 @@ public class UserCreationTest {
         // Assert.
         User user = userRepository.findById(Long.parseLong(id)).orElse(null);
         assertThat(user).isNotNull();
-        assertThat(user.login()).isEqualTo("test");
+        assertThat(user.login()).isEqualTo(login);
     }
 
     @Test
     public void systemAcceptsRegistrationWithAdditionalInfo() {
         // Arrange.
-        UserCreateDTO dto = new UserCreateDTO("test", "ffs");
+        UserCreateDTO dto = new UserCreateDTO(UUID.randomUUID().toString(), "ffs");
         Date date = new GregorianCalendar(1998, Calendar.FEBRUARY, 11).getTime();
         dto.setBirthDate(date);
         dto.setAddress("Palm str 22, 14");
