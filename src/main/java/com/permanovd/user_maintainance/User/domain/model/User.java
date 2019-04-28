@@ -49,11 +49,15 @@ public class User {
         additionalInfo = info;
     }
 
-     void setFirstName(String firstName) {
+    void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-     void setLastName(String lastName) {
+    void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String password() {
+        return password;
     }
 }
