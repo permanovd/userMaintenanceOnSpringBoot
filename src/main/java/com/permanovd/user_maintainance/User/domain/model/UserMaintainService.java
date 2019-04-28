@@ -29,13 +29,8 @@ public class UserMaintainService {
     }
 
     public User register(String login,
-                         String password,
-                         String firstName,
-                         String lastName) {
-        User user = new User(login, passwordEncoder.encode(password));
-        user.provideAdditionalInfo(new UserAdditionalInfo(null, null, null));
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        return user;
+                         String password) {
+
+        return register(login, password, null, null, null, null, null);
     }
 }

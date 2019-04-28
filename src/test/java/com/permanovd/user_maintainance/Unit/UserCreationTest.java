@@ -16,7 +16,7 @@ public class UserCreationTest {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         UserMaintainService service = new UserMaintainService(passwordEncoder);
-        User user = service.register("login", plainPassword, "Test", "Test");
+        User user = service.register("login", plainPassword);
 
         assertThat(user.password()).isNotEqualTo(plainPassword);
         assertThat(passwordEncoder.matches(plainPassword, user.password())).isEqualTo(true);
