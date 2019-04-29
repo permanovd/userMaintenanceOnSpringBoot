@@ -60,4 +60,12 @@ public class User {
     public String password() {
         return password;
     }
+
+    public String firstName() {
+        return firstName;
+    }
+
+    public String lastName() {
+        return lastName;
+    }
 }

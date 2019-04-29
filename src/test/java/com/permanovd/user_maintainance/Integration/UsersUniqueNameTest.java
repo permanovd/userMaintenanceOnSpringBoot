@@ -29,13 +29,13 @@ public class UsersUniqueNameTest {
     @Autowired
     UserRepository userRepository;
 
-    private Collection<String> createdUsers = new ArrayList<>();
+    private Collection<Long> createdUsers = new ArrayList<>();
 
     @Test
     public void registrationFailsWhenUsernameIsNotUnique() {
         UserCreateDTO dto = new UserCreateDTO(UUID.randomUUID().toString(), "password");
 
-        String idOfCreatedUser = userService.register(dto);
+        Long idOfCreatedUser = userService.register(dto);
         createdUsers.add(idOfCreatedUser);
         try {
             userService.register(dto);
@@ -47,8 +47,8 @@ public class UsersUniqueNameTest {
 
     @After
     public void cleanup() {
-        for (String id : createdUsers) {
-            User byId = userRepository.findById(Long.parseLong(id)).orElse(null);
+        for (Long id : createdUsers) {
+            User byId = userRepository.findById(id).orElse(null);
             if (null == byId) {
                 continue;
             }

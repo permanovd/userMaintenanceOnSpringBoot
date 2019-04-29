@@ -1,73 +1,80 @@
 package com.permanovd.user_maintainance.User.ui;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.permanovd.user_maintainance.User.application.UserService;
 import com.permanovd.user_maintainance.User.domain.model.User;
-import com.permanovd.user_maintainance.User.domain.model.UserRepository;
 import com.permanovd.user_maintainance.User.domain.model.UserWithSameNameExistsException;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
-@Controller
-@RequestMapping(path = "/users")
+@RestController
+@RequestMapping(path = "api/users")
 public class UsersMaintainController {
 
     private UserService userService;
 
-    private UserRepository userRepository;
+    private UserOutputDTOAssembler dtoAssembler;
 
-    private ObjectMapper serializer;
 
-    public UsersMaintainController(UserRepository userRepository, ObjectMapper serializer, UserService userService) {
-        this.userRepository = userRepository;
-        this.serializer = serializer;
+    public UsersMaintainController(UserService userService, UserOutputDTOAssembler dtoAssembler) {
         this.userService = userService;
+        this.dtoAssembler = dtoAssembler;
     }
 
 
     @RequestMapping(method = RequestMethod.GET)
-    public void getAll(HttpServletResponse response) throws IOException {
-        response.addHeader("Content-Type", "application/json");
-        List<User> userList = userRepository.findAll();
-        String result = "";
-
-        try {
-            result = serializer.writeValueAsString(userList);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            result = "{\"error\": \"Internal server error.\"}";
+    public List<UserOutputDTO> getAll(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                                      @RequestParam(value = "size", required = false, defaultValue = "50") int size) {
+        if (page > 0) {
+            // todo solve this issue https://stackoverflow.com/a/49575492/4082772
+            --page;
         }
 
-        response.getOutputStream().write(result.getBytes());
+        List<User> userList = userService.getList(page, size);
+        return dtoAssembler.assembleList(userList);
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, path = "/new")
-    public void registerNew(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        String result = "";
-        Scanner s = new Scanner(request.getInputStream()).useDelimiter("\\A");
-        String payload = s.hasNext() ? s.next() : "";
-
-        try {
-            UserCreateDTO userCreateDTO = serializer.readValue(payload, UserCreateDTO.class);
-            String id = userService.register(userCreateDTO);
-            result = "{\"id\": \"" + id + "\"}";
-        } catch (UserWithSameNameExistsException e) {
-            result = "{\"error\": \"This login is already used.\"}";
-        } catch (Exception e) {
-            result = "{\"error\": \"Internal server error.\"}";
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}")
+    public ResponseEntity<?> getOne(@PathVariable("id") Long id) {
+        User user = userService.getUser(id);
+        if (null == user) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HashMap<String, String>() {{
+                put("error", "Not found");
+            }});
         }
 
-        response.addHeader("Content-Type", "application/json");
-        response.getOutputStream().write(result.getBytes());
+        return ResponseEntity.ok(dtoAssembler.assembleOne(user));
+    }
+
+
+    @RequestMapping(method = RequestMethod.POST, path = "/")
+    public ResponseEntity<?> register(@RequestBody UserCreateDTO userCreateDTO, UriComponentsBuilder ucBuilder) {
+        Long createdUserId;
+        try {
+            createdUserId = userService.register(userCreateDTO);
+        } catch (UserWithSameNameExistsException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new HashMap<String, String>() {{
+                put("error", "This login is already used");
+            }});
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    new HashMap<String, String>() {{
+                        put("error", "Internal server error");
+                    }}
+            );
+        }
+
+        User user = userService.getUser(createdUserId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/users/{id}").buildAndExpand(user.getId()).toUri());
+        return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(user);
     }
 
 }
