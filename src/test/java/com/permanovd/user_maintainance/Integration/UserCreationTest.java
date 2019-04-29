@@ -34,10 +34,10 @@ public class UserCreationTest {
         UserCreateDTO dto = new UserCreateDTO(login, "ffs");
 
         // Act.
-        String id = userService.register(dto);
+        Long id = userService.register(dto);
 
         // Assert.
-        User user = userRepository.findById(Long.parseLong(id)).orElse(null);
+        User user = userRepository.findById(id).orElse(null);
         assertThat(user).isNotNull();
         assertThat(user.login()).isEqualTo(login);
     }
@@ -52,10 +52,10 @@ public class UserCreationTest {
         dto.setAboutMe("Test test test");
 
         // Act.
-        String id = userService.register(dto);
+        Long id = userService.register(dto);
 
         // Assert.
-        User user = userRepository.findById(Long.parseLong(id)).orElse(null);
+        User user = userRepository.findById(id).orElse(null);
         assertThat(user).isNotNull();
         assertThat(user.additionalInfo().wasBornAt()).isInSameDayAs(date);
         assertThat(user.additionalInfo().address()).isEqualTo("Palm str 22, 14");
