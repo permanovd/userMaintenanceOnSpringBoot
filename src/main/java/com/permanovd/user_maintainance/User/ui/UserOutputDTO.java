@@ -12,6 +12,9 @@ import java.util.Date;
 class UserOutputDTO {
 
     @JsonProperty
+    private Long id;
+
+    @JsonProperty
     private String login;
 
     @JsonProperty("first-name")

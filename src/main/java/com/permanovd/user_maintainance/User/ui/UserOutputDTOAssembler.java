@@ -10,7 +10,7 @@ import java.util.List;
 public class UserOutputDTOAssembler {
 
     UserOutputDTO assembleOne(User user) {
-        return new UserOutputDTO(user.login(),
+        return new UserOutputDTO(user.getId(), user.login(),
                 user.firstName(),
                 user.lastName(), user.additionalInfo().aboutMe(), user.additionalInfo().wasBornAt());
     }

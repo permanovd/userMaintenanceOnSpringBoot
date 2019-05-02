@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th=”http://www.thymeleaf.org”
+      layout:decorate="~{base.html}">
+<head>
+    <title>Users list</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="row">
+        <a th:href="@{/users/create}">Create user</a>
+    </div>
+    <div class="row">
+        <table class="table table-hover col-lg">
+            <thead>
+            <tr>
+                <th scope="col">Login</th>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">About me</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.login}"></td>
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.aboutMe}"></td>
+                <td>
+                    <div><a th:href="@{'/user/edit/' + ${user.id}}">edit</a></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
