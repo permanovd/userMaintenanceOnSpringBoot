@@ -42,7 +42,7 @@ public class User {
     }
 
     public UserAdditionalInfo additionalInfo() {
-        return additionalInfo;
+        return null == additionalInfo ? new UserAdditionalInfo() : additionalInfo;
     }
 
     void provideAdditionalInfo(UserAdditionalInfo info) {
@@ -87,7 +87,7 @@ public class User {
         if (!(o instanceof User)) {
             return false;
         }
-        
+
         return ((User) o).getId() == getId();
     }
 }

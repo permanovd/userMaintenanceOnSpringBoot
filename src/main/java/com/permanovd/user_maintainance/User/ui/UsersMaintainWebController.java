@@ -34,7 +34,8 @@ public class UsersMaintainWebController {
             --page;
         }
 
-        List<UserOutputDTO> userDTOList = dtoAssembler.assembleList(userService.getList(page, size));
+        List<User> list = userService.getList(page, size);
+        List<UserOutputDTO> userDTOList = dtoAssembler.assembleList(list);
         model.addAttribute("users", userDTOList);
 
         return "user_maintanance/list";
