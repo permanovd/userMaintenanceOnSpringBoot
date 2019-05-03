@@ -9,7 +9,7 @@
     <h2 th:text="${pageTitle}"></h2>
     <hr>
     <div class="row">
-        <form class="col" autocomplete="off" action="#" th:action="@{/create}" th:object="${userDto}" method="post">
+        <form class="col" autocomplete="off" th:object="${userDto}" method="post">
             <div class="form-row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -26,7 +26,7 @@
 
                     <div class="form-group">
                         <label for="inputPassword">Password</label>
-                        <input class="form-control" autocomplete="off" id="inputPassword" aria-describedby="loginHelp"
+                        <input class="form-control" id="inputPassword" aria-describedby="loginHelp"
                                placeholder="Enter password"
                                th:classappend="${#fields.hasErrors('password')} ? is-invalid : ''"
                                type="password" th:field="*{password}"/>

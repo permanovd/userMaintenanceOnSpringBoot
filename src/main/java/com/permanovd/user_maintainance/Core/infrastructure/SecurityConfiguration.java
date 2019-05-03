@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // todo remove. Set only for dev env.
+        http.csrf().disable();
         http.authorizeRequests().antMatchers("/").permitAll();
     }
 

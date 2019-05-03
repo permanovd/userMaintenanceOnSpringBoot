@@ -71,25 +71,36 @@ public class UsersMaintainWebController {
     @GetMapping("/{id}/edit")
     public String changeUserForm(@PathVariable("id") Long id, Model model) {
         User user = userService.getUser(id);
-        model.addAttribute("userDto", dtoAssembler.assembleForChanges(user));
+        UserCreateDTO userCreateDTO = dtoAssembler.assembleForChanges(user);
+        // todo find better solution.
+        userCreateDTO.setPassword("********");
+
+        model.addAttribute("userDto", userCreateDTO);
         model.addAttribute("pageTitle", "Edit ".concat(user.login()).concat(" user"));
 
         return "user_maintanance/user_form";
     }
 
     @PostMapping("/{id}/edit")
-    public String changeUserFormSubmit(@PathVariable("id") Long id, @Valid UserCreateDTO userCreateDTO,
+    public String changeUserFormSubmit(@PathVariable("id") Long id, @ModelAttribute("userDto") @Valid UserUpdateDTO userDTO,
                                        BindingResult bindingResult, Model model) {
+        boolean passwordIsEmpty = bindingResult.getRawFieldValue("password") == null
+                || bindingResult.getRawFieldValue("password").equals("");
+
+        if (!passwordIsEmpty && userDTO.getPassword().length() < 8) {
+            bindingResult.rejectValue("password", "user.password", "Password has to be more than 8 characters long.");
+        }
+
         if (bindingResult.hasErrors()) {
-            model.addAttribute("userDto", userCreateDTO);
+            model.addAttribute("userDto", userDTO);
             return "user_maintanance/user_form";
         }
 
         try {
-            userService.changeUser(userCreateDTO, id);
+            userService.changeUser(userDTO, id);
         } catch (UserWithSameNameExistsException ex) {
             bindingResult.rejectValue("login", "user.login", "This login is already taken. Please try another one");
-            model.addAttribute("userDto", userCreateDTO);
+            model.addAttribute("userDto", userDTO);
 
             return "user_maintanance/user_form";
         }

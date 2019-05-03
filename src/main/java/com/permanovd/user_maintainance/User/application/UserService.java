@@ -4,6 +4,7 @@ import com.permanovd.user_maintainance.User.domain.model.User;
 import com.permanovd.user_maintainance.User.domain.model.UserRepository;
 import com.permanovd.user_maintainance.User.domain.model.UserWithSameNameExistsException;
 import com.permanovd.user_maintainance.User.ui.UserCreateDTO;
+import com.permanovd.user_maintainance.User.ui.UserUpdateDTO;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class UserService {
     }
 
     @Transactional
-    public Long changeUser(UserCreateDTO dto, Long userToChangeId) throws IllegalStateException, UserWithSameNameExistsException {
+    public Long changeUser(UserUpdateDTO dto, Long userToChangeId) throws IllegalStateException, UserWithSameNameExistsException {
         User userToUpdate = getUser(userToChangeId);
         User user = userMaintainService.changeUser(
                 userToUpdate,
