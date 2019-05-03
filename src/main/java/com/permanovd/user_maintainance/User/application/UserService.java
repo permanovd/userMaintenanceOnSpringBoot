@@ -2,6 +2,7 @@ package com.permanovd.user_maintainance.User.application;
 
 import com.permanovd.user_maintainance.User.domain.model.User;
 import com.permanovd.user_maintainance.User.domain.model.UserRepository;
+import com.permanovd.user_maintainance.User.domain.model.UserWithSameNameExistsException;
 import com.permanovd.user_maintainance.User.ui.UserCreateDTO;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,7 @@ public class UserService {
     }
 
     @Transactional
-    public Long register(UserCreateDTO dto) {
+    public Long register(UserCreateDTO dto) throws UserWithSameNameExistsException {
         User user = userMaintainService.register(
                 dto.getLogin(),
                 dto.getPassword(),
