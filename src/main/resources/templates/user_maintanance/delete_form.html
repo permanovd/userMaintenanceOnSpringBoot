@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th=”http://www.thymeleaf.org”
+      layout:decorate="~{base.html}">
+<head>
+    <title>Users list</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <form class="col" autocomplete="off" action="#" th:object="${userDto}" method="post">
+
+            <div th:text="'Are you sure you want delete ' + ${userDto.login} + ' user?'"></div>
+            <input type="hidden" th:field="*{id}"/>
+            <input class="btn btn-danger" type="submit" value="Delete"/>
+            <a class="btn btn-secondary" th:href="@{'/'}">Cancel</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>

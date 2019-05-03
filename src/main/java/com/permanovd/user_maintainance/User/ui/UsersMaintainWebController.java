@@ -1,6 +1,7 @@
 package com.permanovd.user_maintainance.User.ui;
 
 import com.permanovd.user_maintainance.User.application.UserService;
+import com.permanovd.user_maintainance.User.domain.model.User;
 import com.permanovd.user_maintainance.User.domain.model.UserWithSameNameExistsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,27 @@ public class UsersMaintainWebController {
         model.addAttribute("users", userDTOList);
 
         return "user_maintanance/list";
+    }
+
+    @GetMapping(path = "{id}/delete")
+    public String deleteUserForm(@PathVariable("id") Long id, Model model) {
+        User user = userService.getUser(id);
+        if (null == user) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("userDto", dtoAssembler.assembleOne(user));
+        return "user_maintanance/delete_form";
+    }
+
+    @PostMapping(path = "{id}/delete")
+    public String deleteUserFormSubmit(@PathVariable("id") Long id, Model model) {
+        try {
+            userService.deleteUser(id);
+        } catch (IllegalStateException ignored) {
+        }
+
+        return "redirect:/";
     }
 
     @GetMapping("/create")

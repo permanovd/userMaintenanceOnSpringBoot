@@ -39,6 +39,16 @@ public class UserService {
         return user.getId();
     }
 
+    @Transactional
+    public void deleteUser(Long id) throws IllegalStateException {
+        User user = getUser(id);
+        if (null == user) {
+            throw new IllegalStateException();
+        }
+
+        userRepository.deleteById(id);
+    }
+
     public User getUser(Long id) {
         return userRepository.findById(id).orElse(null);
     }
