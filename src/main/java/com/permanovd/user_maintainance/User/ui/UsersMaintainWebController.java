@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -40,10 +41,10 @@ public class UsersMaintainWebController {
     }
 
     @GetMapping(path = "{id}/delete")
-    public String deleteUserForm(@PathVariable("id") Long id, Model model) {
+    public String deleteUserForm(@PathVariable("id") Long id, Model model) throws ResourceNotFoundException {
         User user = userService.getUser(id);
         if (null == user) {
-            return "redirect:/";
+            throw new ResourceNotFoundException();
         }
 
         model.addAttribute("userDto", dtoAssembler.assembleOne(user));
@@ -69,8 +70,12 @@ public class UsersMaintainWebController {
     }
 
     @GetMapping("/{id}/edit")
-    public String changeUserForm(@PathVariable("id") Long id, Model model) {
+    public String changeUserForm(@PathVariable("id") Long id, Model model) throws ResourceNotFoundException {
         User user = userService.getUser(id);
+        if (null == user) {
+            throw new ResourceNotFoundException();
+        }
+
         UserCreateDTO userCreateDTO = dtoAssembler.assembleForChanges(user);
         // todo find better solution.
         userCreateDTO.setPassword("********");
@@ -88,6 +93,8 @@ public class UsersMaintainWebController {
                 || bindingResult.getRawFieldValue("password").equals("");
 
         if (!passwordIsEmpty && userDTO.getPassword().length() < 8) {
+            // todo find better way to handle.
+            //  Fucked up solution with code duplication.
             bindingResult.rejectValue("password", "user.password", "Password has to be more than 8 characters long.");
         }
 
@@ -128,4 +135,19 @@ public class UsersMaintainWebController {
         return "redirect:/";
     }
 
+    @GetMapping("/{id}/view")
+    public String viewUser(@PathVariable("id") Long id, Model model) throws ResourceNotFoundException {
+        User user = userService.getUser(id);
+        if (null == user) {
+            throw new ResourceNotFoundException();
+        }
+        model.addAttribute("userDto", dtoAssembler.assembleOne(user));
+        return "user_maintanance/view";
+    }
+
+    @ExceptionHandler({ResourceNotFoundException.class})
+    public String handleException() {
+
+        return "core/not_found";
+    }
 }

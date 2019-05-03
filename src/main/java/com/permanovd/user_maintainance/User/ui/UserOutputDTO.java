@@ -26,6 +26,9 @@ class UserOutputDTO {
     @JsonProperty("about-me")
     private String aboutMe;
 
+    @JsonProperty
+    private String address;
+
     @JsonProperty("birth-date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthDate;

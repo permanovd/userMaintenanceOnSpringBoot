@@ -13,7 +13,7 @@ public class UserOutputDTOAssembler {
     UserOutputDTO assembleOne(User user) {
         return new UserOutputDTO(user.getId(), user.login(),
                 user.firstName(),
-                user.lastName(), user.additionalInfo().aboutMe(), user.additionalInfo().wasBornAt());
+                user.lastName(), user.additionalInfo().aboutMe(), user.additionalInfo().address(), user.additionalInfo().wasBornAt());
     }
 
     List<UserOutputDTO> assembleList(List<User> userList) {
