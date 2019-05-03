@@ -68,4 +68,26 @@ public class User {
     public String lastName() {
         return lastName;
     }
+
+    void changeLogin(String newLogin) {
+        login = newLogin;
+    }
+
+    void changePassword(String newPassword) {
+        password = newPassword;
+    }
+
+    void rename(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof User)) {
+            return false;
+        }
+        
+        return ((User) o).getId() == getId();
+    }
 }

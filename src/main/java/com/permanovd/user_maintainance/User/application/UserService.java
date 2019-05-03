@@ -40,6 +40,25 @@ public class UserService {
     }
 
     @Transactional
+    public Long changeUser(UserCreateDTO dto, Long userToChangeId) throws IllegalStateException, UserWithSameNameExistsException {
+        User userToUpdate = getUser(userToChangeId);
+        User user = userMaintainService.changeUser(
+                userToUpdate,
+                dto.getLogin(),
+                dto.getPassword(),
+                dto.getFirstName(),
+                dto.getLastName(),
+                dto.getBirthDate(),
+                dto.getAddress(),
+                dto.getAboutMe()
+        );
+
+        userRepository.save(user);
+
+        return user.getId();
+    }
+
+    @Transactional
     public void deleteUser(Long id) throws IllegalStateException {
         User user = getUser(id);
         if (null == user) {

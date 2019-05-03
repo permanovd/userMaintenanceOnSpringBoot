@@ -51,7 +51,7 @@ public class UsersMaintainWebController {
     }
 
     @PostMapping(path = "{id}/delete")
-    public String deleteUserFormSubmit(@PathVariable("id") Long id, Model model) {
+    public String deleteUserFormSubmit(@PathVariable("id") Long id) {
         try {
             userService.deleteUser(id);
         } catch (IllegalStateException ignored) {
@@ -62,9 +62,39 @@ public class UsersMaintainWebController {
 
     @GetMapping("/create")
     public String createUserForm(Model model) {
-
         model.addAttribute("userDto", new UserCreateDTO());
-        return "user_maintanance/create_new";
+        model.addAttribute("pageTitle", "Create new user");
+
+        return "user_maintanance/user_form";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String changeUserForm(@PathVariable("id") Long id, Model model) {
+        User user = userService.getUser(id);
+        model.addAttribute("userDto", dtoAssembler.assembleForChanges(user));
+        model.addAttribute("pageTitle", "Edit ".concat(user.login()).concat(" user"));
+
+        return "user_maintanance/user_form";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String changeUserFormSubmit(@PathVariable("id") Long id, @Valid UserCreateDTO userCreateDTO,
+                                       BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("userDto", userCreateDTO);
+            return "user_maintanance/user_form";
+        }
+
+        try {
+            userService.changeUser(userCreateDTO, id);
+        } catch (UserWithSameNameExistsException ex) {
+            bindingResult.rejectValue("login", "user.login", "This login is already taken. Please try another one");
+            model.addAttribute("userDto", userCreateDTO);
+
+            return "user_maintanance/user_form";
+        }
+
+        return "redirect:/";
     }
 
     @PostMapping("/create")
@@ -72,7 +102,7 @@ public class UsersMaintainWebController {
                                        BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("userDto", userCreateDTO);
-            return "user_maintanance/create_new";
+            return "user_maintanance/user_form";
         }
 
         try {
@@ -80,7 +110,8 @@ public class UsersMaintainWebController {
         } catch (UserWithSameNameExistsException ex) {
             bindingResult.rejectValue("login", "user.login", "This login is already taken. Please try another one");
             model.addAttribute("userDto", userCreateDTO);
-            return "user_maintanance/create_new";
+
+            return "user_maintanance/user_form";
         }
 
         return "redirect:/";

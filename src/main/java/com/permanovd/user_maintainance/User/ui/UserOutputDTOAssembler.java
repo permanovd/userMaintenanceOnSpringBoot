@@ -1,6 +1,7 @@
 package com.permanovd.user_maintainance.User.ui;
 
 import com.permanovd.user_maintainance.User.domain.model.User;
+import com.permanovd.user_maintainance.User.domain.model.UserAdditionalInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,5 +24,11 @@ public class UserOutputDTOAssembler {
         }
 
         return userOutputDTOS;
+    }
+
+    UserCreateDTO assembleForChanges(User user) {
+        UserAdditionalInfo userAdditionalInfo = user.additionalInfo();
+        return new UserCreateDTO(user.login(), user.password(), user.firstName(), user.lastName(),
+                userAdditionalInfo.wasBornAt(), userAdditionalInfo.address(), userAdditionalInfo.aboutMe());
     }
 }

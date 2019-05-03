@@ -11,6 +11,7 @@ public class ControllerAdvice {
 
     @ModelAttribute("applicationVersion")
     public String getApplicationVersion() {
+        // todo this param appears in get params on every submit.
         return applicationVersion;
     }
 }
