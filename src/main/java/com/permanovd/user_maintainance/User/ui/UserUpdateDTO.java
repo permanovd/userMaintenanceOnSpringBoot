@@ -1,6 +1,5 @@
 package com.permanovd.user_maintainance.User.ui;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -15,13 +14,12 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCreateDTO {
+public class UserUpdateDTO {
 
     @NotNull
     @Size(min = 2, max = 255)
     private String login;
 
-    @Size(min = 7, max = 32)
     private String password;
 
     @JsonProperty(value = "first-name")
@@ -41,10 +39,4 @@ public class UserCreateDTO {
     @JsonProperty(value = "about-me")
     private String aboutMe;
 
-    @JsonCreator
-    public UserCreateDTO(@JsonProperty(value = "login", required = true) String login,
-                         @JsonProperty(value = "password", required = true) String password) {
-        this.login = login;
-        this.password = password;
-    }
 }

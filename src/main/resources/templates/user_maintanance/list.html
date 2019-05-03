@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th=”http://www.thymeleaf.org”
+      layout:decorate="~{base.html}">
+<head>
+    <title>Users list</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="row">
+        <a th:href="@{/create}">Create user</a>
+    </div>
+    <div class="row">
+        <table class="table table-hover col-lg">
+            <thead>
+            <tr>
+                <th scope="col">Login</th>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Address</th>
+                <th scope="col">Birth date</th>
+                <th scope="col">About me</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.login}"></td>
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.address}"></td>
+                <td th:text="${#dates.format(user.birthDate, 'dd-MM-yyyy')}"></td>
+                <td th:text="${user.aboutMe}"></td>
+                <td>
+                    <a class="btn btn-success" th:href="@{'/' + ${user.id} + '/view'}">view</a>
+                    <a class="btn btn-warning" th:href="@{'/' + ${user.id} + '/edit'}">edit</a>
+                    <a class="btn btn-danger" th:href="@{'/' + ${user.id} + '/delete'}">delete</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

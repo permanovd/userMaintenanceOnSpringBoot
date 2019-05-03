@@ -4,7 +4,7 @@ public class UserWithSameNameExistsException extends IllegalStateException {
 
     private User user;
 
-    UserWithSameNameExistsException(User user) {
+    public UserWithSameNameExistsException(User user) {
         this.user = user;
     }
 

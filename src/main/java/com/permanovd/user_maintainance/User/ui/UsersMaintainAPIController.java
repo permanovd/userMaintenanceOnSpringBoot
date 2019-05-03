@@ -14,14 +14,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/users")
-public class UsersMaintainController {
+public class UsersMaintainAPIController {
 
     private UserService userService;
 
     private UserOutputDTOAssembler dtoAssembler;
 
 
-    public UsersMaintainController(UserService userService, UserOutputDTOAssembler dtoAssembler) {
+    public UsersMaintainAPIController(UserService userService, UserOutputDTOAssembler dtoAssembler) {
         this.userService = userService;
         this.dtoAssembler = dtoAssembler;
     }

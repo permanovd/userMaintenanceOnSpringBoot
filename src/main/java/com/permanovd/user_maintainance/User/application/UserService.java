@@ -2,7 +2,9 @@ package com.permanovd.user_maintainance.User.application;
 
 import com.permanovd.user_maintainance.User.domain.model.User;
 import com.permanovd.user_maintainance.User.domain.model.UserRepository;
+import com.permanovd.user_maintainance.User.domain.model.UserWithSameNameExistsException;
 import com.permanovd.user_maintainance.User.ui.UserCreateDTO;
+import com.permanovd.user_maintainance.User.ui.UserUpdateDTO;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ public class UserService {
     }
 
     @Transactional
-    public Long register(UserCreateDTO dto) {
+    public Long register(UserCreateDTO dto) throws UserWithSameNameExistsException {
         User user = userMaintainService.register(
                 dto.getLogin(),
                 dto.getPassword(),
@@ -36,6 +38,35 @@ public class UserService {
         userRepository.save(user);
 
         return user.getId();
+    }
+
+    @Transactional
+    public Long changeUser(UserUpdateDTO dto, Long userToChangeId) throws IllegalStateException, UserWithSameNameExistsException {
+        User userToUpdate = getUser(userToChangeId);
+        User user = userMaintainService.changeUser(
+                userToUpdate,
+                dto.getLogin(),
+                dto.getPassword(),
+                dto.getFirstName(),
+                dto.getLastName(),
+                dto.getBirthDate(),
+                dto.getAddress(),
+                dto.getAboutMe()
+        );
+
+        userRepository.save(user);
+
+        return user.getId();
+    }
+
+    @Transactional
+    public void deleteUser(Long id) throws IllegalStateException {
+        User user = getUser(id);
+        if (null == user) {
+            throw new IllegalStateException();
+        }
+
+        userRepository.deleteById(id);
     }
 
     public User getUser(Long id) {

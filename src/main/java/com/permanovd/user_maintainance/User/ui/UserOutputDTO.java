@@ -12,6 +12,9 @@ import java.util.Date;
 class UserOutputDTO {
 
     @JsonProperty
+    private Long id;
+
+    @JsonProperty
     private String login;
 
     @JsonProperty("first-name")
@@ -22,6 +25,9 @@ class UserOutputDTO {
 
     @JsonProperty("about-me")
     private String aboutMe;
+
+    @JsonProperty
+    private String address;
 
     @JsonProperty("birth-date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
