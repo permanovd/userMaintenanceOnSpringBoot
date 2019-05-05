@@ -4,8 +4,10 @@
 
 1) Configuration
 
-Open `/src/main/resources/application.properties` file and enter
-your database configuration.
+Navigate to project root directory. Copy or rename `/src/main/resources/application-example.properties` to 
+`/src/main/resources/application-prod.properties`
+(`cp /src/main/resources/application-example.properties /src/main/resources/application-prod.properties`)
+Open `/src/main/resources/application-prod.properties` file and enter your database configuration.
 
 ```
 spring.datasource.platform=postgres
@@ -25,4 +27,6 @@ Unix: `./mvnw clean install -DskipTests`
 
 Navigate to project root directory and run:
 
-`java -jar ./target/tests-0.0.1-SNAPSHOT.jar`
+`java -jar ./target/tests-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod`
+
+**Application will be started on http://localhost:8081**

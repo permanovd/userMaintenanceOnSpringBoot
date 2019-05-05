@@ -41,7 +41,7 @@ public class UsersUniqueNameTest {
             userService.register(dto);
             fail("Unique username validation is not working");
         } catch (UserWithSameNameExistsException ex) {
-            assertThat(String.valueOf(ex.getUser().getId())).isEqualTo(idOfCreatedUser);
+            assertThat(ex.getUser().getId()).isEqualTo(idOfCreatedUser);
         }
     }
 
