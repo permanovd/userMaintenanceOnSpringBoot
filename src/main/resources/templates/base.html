@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th=”http://www.thymeleaf.org” lang="en">
+<head>
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">User maintainance</title>
+    <link rel="stylesheet"
+          th:href="@{/assets/css/main.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="jumbotron">
+    <h1 class="display-4">User maintainance app</h1>
+</div>
+
+<div class="container" layout:fragment="content">
+</div>
+<footer>
+    <div>
+        App version: <th:block th:text="${applicationVersion}"></th:block>
+    </div>
+</footer>
+</body>
+</html>
